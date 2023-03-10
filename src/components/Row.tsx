@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import { nanoid } from 'nanoid';
-type CellId = number; // unique value for all table
-type CellValue = number; // three digit random number
-
-type Cell = {
-  id: CellId,
-  amount: CellValue
-}
+import { Cell } from '../types/types';
 type Props = {
     row: Cell[],
     indexRow: number,

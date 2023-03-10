@@ -18,6 +18,7 @@ const Form: React.FC<Props> = ({onSubmitFoo}) => {
     const N = Number(target.nVal.value); // typechecks!
     if(M <= 0 || M > 100 || N <= 0 || N > 100){
       setShowError(true);
+      return;
     }
     onSubmitFoo(M, N);
     setShow(false);
