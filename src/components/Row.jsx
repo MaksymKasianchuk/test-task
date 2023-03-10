@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
 const nanoid_1 = require("nanoid");
-const Row = ({ row, indexRow, onClickHandler, deleteHandler }) => {
+const MatrixProvider_1 = require("../context/MatrixProvider");
+const Row = ({ row, indexRow }) => {
     const [sum, setSum] = (0, react_1.useState)(0);
     const [sumPercents, setPercents] = (0, react_1.useState)([]);
     const [showPercents, setShowPercents] = (0, react_1.useState)(false);
+    const { handleIncrement, deleteRow } = (0, MatrixProvider_1.useMatrix)();
     (0, react_1.useEffect)(() => {
         const countSumArr = () => {
             let initVal = 0;
@@ -30,11 +32,11 @@ const Row = ({ row, indexRow, onClickHandler, deleteHandler }) => {
         setPercents(percentsArr);
     }, [sum, row]);
     return (<tr key={(0, nanoid_1.nanoid)()}>
-            <td key={(0, nanoid_1.nanoid)()} onClick={() => deleteHandler(indexRow)}>
+            <td key={(0, nanoid_1.nanoid)()} onClick={() => deleteRow(indexRow)}>
                 Cell Value M = {indexRow + 1}
             </td>
             {row.map((cell, cellIdx) => {
-            return (<td key={cell.id} onClick={() => onClickHandler(cell.id)} style={showPercents ?
+            return (<td key={cell.id} onClick={() => handleIncrement(cell.id)} style={showPercents ?
                     { background: `linear-gradient(0deg, rgba(63,63,255,1) 0%, rgba(63,63,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)` } :
                     { background: "#fff" }}>
                             {cell.amount}

@@ -9,13 +9,7 @@ const GenerateForm_1 = __importDefault(require("./components/GenerateForm"));
 const Row_1 = __importDefault(require("./components/Row"));
 require("./App.css");
 const App = () => {
-    const { M, setM, N, setN, matrix, setMatrix, averageArr, createMatrix, handleIncrement, addRow, deleteRow } = (0, MatrixProvider_1.useMatrix)();
-    const onSubmit = (mVal, nVal) => {
-        setM(mVal);
-        setN(nVal);
-        const matr = createMatrix(mVal, nVal);
-        setMatrix(matr);
-    };
+    const { M, N, matrix, averageArr, handleIncrement, addRow, deleteRow } = (0, MatrixProvider_1.useMatrix)();
     const generateFirstRow = () => {
         let arr = [];
         for (let j = 0; j <= N; j++) {
@@ -30,8 +24,7 @@ const App = () => {
     };
     const firstRow = generateFirstRow();
     return (<div className="App">
-      <GenerateForm_1.default onSubmitFoo={onSubmit}/>
-
+      <GenerateForm_1.default />
       {(M !== 0 && N !== 0) && (<>
             <table>
               <tbody>
@@ -39,7 +32,7 @@ const App = () => {
                   {firstRow.map(item => <td key={(0, nanoid_1.nanoid)()}>{item}</td>)}
                   <td key={(0, nanoid_1.nanoid)()}>Sum values</td>
                 </tr>
-                {matrix.map((row, index) => <Row_1.default key={(0, nanoid_1.nanoid)()} row={row} indexRow={index} onClickHandler={handleIncrement} deleteHandler={deleteRow}/>)}
+                {matrix.map((row, index) => <Row_1.default key={(0, nanoid_1.nanoid)()} row={row} indexRow={index}/>)}
                 <tr>
                   <td key={(0, nanoid_1.nanoid)()}>Average values</td>
                   {averageArr.map((item) => <td key={(0, nanoid_1.nanoid)()}>{item}</td>)}

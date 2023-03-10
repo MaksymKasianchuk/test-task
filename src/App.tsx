@@ -1,5 +1,5 @@
 import { useMatrix } from './context/MatrixProvider';
-import { customAlphabet, nanoid } from 'nanoid';
+import { nanoid } from 'nanoid';
 import Form from './components/GenerateForm';
 import Row from './components/Row';
 import { Cell } from './types/types';
@@ -8,24 +8,13 @@ import './App.css';
 const App: React.FC = () => {
   const {  
     M, 
-    setM, 
     N, 
-    setN, 
     matrix, 
-    setMatrix, 
     averageArr, 
-    createMatrix, 
     handleIncrement, 
     addRow, 
     deleteRow 
   } = useMatrix();
-
-  const onSubmit = (mVal:number, nVal:number) => {
-    setM(mVal);
-    setN(nVal);
-    const matr = createMatrix(mVal, nVal);
-    setMatrix(matr);
-  }
   
   const generateFirstRow = () => {
     let arr:string[] = [];
@@ -44,8 +33,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Form onSubmitFoo={onSubmit} />
-
+      <Form />
       {
         (M !== 0 && N !== 0) && (
           <>
@@ -65,8 +53,6 @@ const App: React.FC = () => {
                       key={nanoid()} 
                       row={row} 
                       indexRow={index} 
-                      onClickHandler={handleIncrement} 
-                      deleteHandler={deleteRow} 
                     />
                   )
                 }

@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useMatrix } from "../context/MatrixProvider";
 
-type Props = {
-  onSubmitFoo: (M:number, N:number) => void;
-};
 
-const Form: React.FC<Props> = ({onSubmitFoo}) => {
+const Form: React.FC = () => {
   const [show, setShow] = useState(true);
   const [showError, setShowError] = useState(false);
+  const {  
+    setM, 
+    setN, 
+    setMatrix, 
+    createMatrix, 
+  } = useMatrix();
 
   const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault();
@@ -20,7 +24,10 @@ const Form: React.FC<Props> = ({onSubmitFoo}) => {
       setShowError(true);
       return;
     }
-    onSubmitFoo(M, N);
+    setM(M);
+    setN(N);
+    const matr = createMatrix(M, N);
+    setMatrix(matr);
     setShow(false);
   }
 

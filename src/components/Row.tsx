@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { nanoid } from 'nanoid';
+import { useMatrix } from '../context/MatrixProvider';
 import { Cell } from '../types/types';
+
 type Props = {
     row: Cell[],
     indexRow: number,
-    onClickHandler: (id:number) => void,
-    deleteHandler: (index:number) => void,
 };
-const Row: React.FC<Props> = ({ row, indexRow, onClickHandler, deleteHandler }) => {
+const Row: React.FC<Props> = ({ row, indexRow }) => {
     const [ sum, setSum ] = useState<number>(0);
     const [ sumPercents, setPercents ] = useState<number[]>([]);
     const [ showPercents, setShowPercents ] = useState<boolean>(false);
+    const { handleIncrement, deleteRow } = useMatrix();
 
     useEffect(()=> {
         const countSumArr = () => {
@@ -41,7 +42,7 @@ const Row: React.FC<Props> = ({ row, indexRow, onClickHandler, deleteHandler }) 
 
     return(
         <tr key={nanoid()}>
-            <td key={nanoid()}  onClick={() => deleteHandler(indexRow)}>
+            <td key={nanoid()}  onClick={() => deleteRow(indexRow)}>
                 Cell Value M = {indexRow + 1}
             </td>
             {
@@ -49,7 +50,7 @@ const Row: React.FC<Props> = ({ row, indexRow, onClickHandler, deleteHandler }) 
                     return (
                         <td
                         key={cell.id} 
-                        onClick={() => onClickHandler(cell.id)}
+                        onClick={() => handleIncrement(cell.id)}
                         style={
                             showPercents ? 
                             {background: `linear-gradient(0deg, rgba(63,63,255,1) 0%, rgba(63,63,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)`} : 

@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
-const Form = ({ onSubmitFoo }) => {
+const MatrixProvider_1 = require("../context/MatrixProvider");
+const Form = () => {
     const [show, setShow] = (0, react_1.useState)(true);
     const [showError, setShowError] = (0, react_1.useState)(false);
+    const { setM, setN, setMatrix, createMatrix, } = (0, MatrixProvider_1.useMatrix)();
     const handleSubmit = (e) => {
         e.preventDefault();
         const target = e.target;
@@ -13,7 +15,10 @@ const Form = ({ onSubmitFoo }) => {
             setShowError(true);
             return;
         }
-        onSubmitFoo(M, N);
+        setM(M);
+        setN(N);
+        const matr = createMatrix(M, N);
+        setMatrix(matr);
         setShow(false);
     };
     return (<>
