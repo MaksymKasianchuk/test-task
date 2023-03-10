@@ -9,10 +9,14 @@ type Cell = {
 }
 type Props = {
     row: Cell[],
+    indexRow: number,
     onClickHandler: (id:number) => void,
+    deleteHandler: (index:number) => void,
 };
-const Row: React.FC<Props> = ({ row, onClickHandler }) => {
+const Row: React.FC<Props> = ({ row, indexRow, onClickHandler, deleteHandler }) => {
     const [ sum, setSum ] = useState<number>(0);
+    const [ sumPercents, setPercents ] = useState<number[]>([]);
+    const [ showPercents, setShowPercents ] = useState<boolean>(false);
 
     useEffect(()=> {
         const countSumArr = () => {
@@ -27,21 +31,47 @@ const Row: React.FC<Props> = ({ row, onClickHandler }) => {
         setSum(calcSum);
     }, [row]);
     
+    useEffect(()=> {
+        const countPercents = () => {
+            let arr:number[] = [];
+            row.map((cell:Cell) => {
+                let percent = Number(((100*cell.amount)/sum).toFixed(1));
+                if( isNaN(percent) ) percent = 0;
+                return arr.push(percent);
+            })
+            return arr;
+        }
+        const percentsArr = countPercents();
+        setPercents(percentsArr);
+    }, [sum, row]);
+
     return(
         <tr key={nanoid()}>
-            <td key={nanoid()}></td>
-            {/* <td key={nanoid()} >Cell Value M = {index + 1}</td> */}
+            <td key={nanoid()}  onClick={() => deleteHandler(indexRow)}>
+                Cell Value M = {indexRow + 1}
+            </td>
             {
-                row.map((cell:Cell) => {
+                row.map((cell:Cell, cellIdx) => {
                     return (
-                        <td 
+                        <td
                         key={cell.id} 
                         onClick={() => onClickHandler(cell.id)}
-                        >{cell.amount}</td>
+                        style={
+                            showPercents ? 
+                            {background: `linear-gradient(0deg, rgba(63,63,255,1) 0%, rgba(63,63,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)`} : 
+                            {background: "#fff"}
+                        }
+                        >
+                            {cell.amount}
+                            {showPercents && (<span>-{sumPercents[cellIdx]}%</span>)}
+                        </td>
                     )}
                 )
             }
-            <td key={nanoid()}>{sum}</td>
+            <td key={nanoid()}  
+                onMouseEnter={() => setShowPercents(true)}
+                onMouseLeave={() => setShowPercents(false)}
+            >{sum}</td>
         </tr>
     );
 }
