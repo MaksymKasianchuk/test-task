@@ -1,5 +1,25 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 60px 30px;
+}
+.add-row-btn{
+  margin: 20px 0 0 0;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid #eee;
+  background: #f8f8f8;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 250ms linear;
+}
+.add-row-btn:hover{
+  opacity: 0.5;
 }
 
 .App-logo {

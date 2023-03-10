@@ -11,16 +11,14 @@ const App: React.FC = () => {
     N, 
     matrix, 
     averageArr, 
-    handleIncrement, 
-    addRow, 
-    deleteRow 
+    addRow,
   } = useMatrix();
   
   const generateFirstRow = () => {
     let arr:string[] = [];
     for (let j = 0; j <= N; j++) {
       if (j===0) {
-        arr.push('Click on row name for delete it');
+        arr.push('Click on row name to delete it');
         
       } else{
         arr.push(`Cell values N = ${j}`);
@@ -68,7 +66,7 @@ const App: React.FC = () => {
               </tbody>
             </table>
       
-            <button onClick={addRow}>Add Row</button>
+            <button className="add-row-btn" onClick={addRow}>Add Row</button>
           </>
         )
       }

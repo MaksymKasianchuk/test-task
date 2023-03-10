@@ -9,12 +9,12 @@ const GenerateForm_1 = __importDefault(require("./components/GenerateForm"));
 const Row_1 = __importDefault(require("./components/Row"));
 require("./App.css");
 const App = () => {
-    const { M, N, matrix, averageArr, handleIncrement, addRow, deleteRow } = (0, MatrixProvider_1.useMatrix)();
+    const { M, N, matrix, averageArr, addRow, } = (0, MatrixProvider_1.useMatrix)();
     const generateFirstRow = () => {
         let arr = [];
         for (let j = 0; j <= N; j++) {
             if (j === 0) {
-                arr.push('Click on row name for delete it');
+                arr.push('Click on row name to delete it');
             }
             else {
                 arr.push(`Cell values N = ${j}`);
@@ -41,7 +41,7 @@ const App = () => {
               </tbody>
             </table>
       
-            <button onClick={addRow}>Add Row</button>
+            <button className="add-row-btn" onClick={addRow}>Add Row</button>
           </>)}
 
     </div>);

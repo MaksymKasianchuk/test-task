@@ -22,3 +22,36 @@ td{
   cursor: pointer;
   background-color: transparent; 
 }
+
+form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+input{
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  display: inline-block;
+  border-radius:  3px;
+  outline: none;
+  border: 1px solid #eee;
+  background: #fff;
+}
+form>button{
+  width: 100%;
+  display: inline-block;
+  border-radius:  3px;
+  outline: none;
+  border: 1px solid #eee;
+  background: #f8f8f8;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 250ms linear;
+}
+form>button:hover{
+  opacity: 0.5;
+}
+.form-error{
+  color: red;
+}

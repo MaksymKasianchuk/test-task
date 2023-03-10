@@ -11,6 +11,7 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
     const [ sum, setSum ] = useState<number>(0);
     const [ sumPercents, setPercents ] = useState<number[]>([]);
     const [ showPercents, setShowPercents ] = useState<boolean>(false);
+    const [ showDelete, setShowDelete ] = useState<boolean>(false);
     const { handleIncrement, deleteRow } = useMatrix();
 
     useEffect(()=> {
@@ -41,9 +42,20 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
     }, [sum, row]);
 
     return(
-        <tr key={nanoid()}>
-            <td key={nanoid()}  onClick={() => deleteRow(indexRow)}>
-                Cell Value M = {indexRow + 1}
+        <tr key={nanoid()}
+        style={
+            showDelete ? 
+            {background: "red"} : 
+            {background: "#fff"}
+        }
+        >
+            <td 
+                key={nanoid()} 
+                onMouseEnter={() => setShowDelete(true)}
+                onMouseLeave={() => setShowDelete(false)} 
+                onClick={() => deleteRow(indexRow)}
+            >
+                { showDelete ? "Delete this row" : `Cell Value M = ${indexRow + 1}`}
             </td>
             {
                 row.map((cell:Cell, cellIdx) => {
@@ -53,8 +65,8 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
                         onClick={() => handleIncrement(cell.id)}
                         style={
                             showPercents ? 
-                            {background: `linear-gradient(0deg, rgba(63,63,255,1) 0%, rgba(63,63,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)`} : 
-                            {background: "#fff"}
+                            {background: `linear-gradient(0deg, rgba(162,162,255,1) 0%, rgba(162,162,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)`} : 
+                            {background: "transparrent"}
                         }
                         >
                             {cell.amount}
