@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { customAlphabet, nanoid } from 'nanoid';
-import Form from './components/AddRowForm';
+import Form from './components/GenerateForm';
+import Row from './components/Row';
 import './App.css';
 
 type CellId = number; // unique value for all table
@@ -10,78 +11,61 @@ type Cell = {
   id: CellId,
   amount: CellValue
 }
-const nanoidNum = customAlphabet('1234567890', 3)
+const nanoidNum = customAlphabet('1234567890', 3);
 
 const App: React.FC = () => {
   const [ M, setM ] = useState(0);
   const [ N, setN ] = useState(0);
   const [ matrix, setMatrix ] = useState<Cell[][]>([[]]);
   const [ averageArr, setAverageArr ] = useState<number[]>([]);
-  const [ sum, setSum ] = useState<number[]>([]);
-  
-  //generation newCell
-  function newCell(id:CellId, maxValue:number){
-    const amount:CellValue = Math.floor(Math.random() * maxValue);
-    const newCell:Cell = {
-      id,
-      amount
-    }
-    return newCell;
-  }
-
-  //create matrix
-  function createMatrix(vM:number, vN:number){
-    let matrixL:Cell[][] = [[]];
-    for (let i = 0; i < vM; i++) {
-      matrixL.push(new Array(N));
-      for (let j = 0; j < vN; j++) {
-        matrixL[i][j] = newCell(Number(nanoidNum()), (vM*vN));
+ 
+  useEffect(()=> {
+    const newCell = (id:CellId, maxValue:number) => {
+      const amount:CellValue = Math.floor(Math.random() * maxValue);
+      const newCell:Cell = {
+        id,
+        amount
       }
+      return newCell;
     }
-    matrixL.pop();
-   return matrixL;
-  }
-  
-  function countSumArr() {
-    let result:number[] = [];
-    matrix.map((row:Cell[]) => {
-      const initialValue = 0;
-      return result.push(row.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.amount,
-        initialValue
-      ));
-    });
-    return result;
-  }
-
-  function countAverege() {
-    let result = [];
-    let i, j;
-  
-    for (i = 0; i < M; i++) {
-      console.log(matrix);
-      let accumulator = 0;
-      for (j = 0; j < N; j++) {
-        accumulator += matrix[j][i].amount;
+    const createMatrix = (vM:number, vN:number) => {
+      let matrixL:Cell[][] = [[]];
+      for (let i = 0; i < vM; i++) {
+        matrixL.push(new Array(N));
+        for (let j = 0; j < vN; j++) {
+          matrixL[i][j] = newCell(Number(nanoidNum()), (vM*vN));
+        }
       }
-      let item = (accumulator / N).toFixed(1);
-      result.push(Number(item));
+      matrixL.pop();
+      return matrixL;
     }
-  
-    return result;
-  }
+    const matr = createMatrix(M, N);
+    setMatrix(matr);
+  }, [M, N]);
 
-  const generateFirstRow = () => {
-    let arr:string[] = [];
-    for (let j = 0; j <= N; j++) {
-      if (j===0) {
-        arr.push('');
-        
-      } else{
-        arr.push(`Cell values N = ${j}`);
+  useEffect(()=> {
+    const countAverege = () => {
+      let result = [];
+      let i, j;
+      for (i = 0; i < M; i++) {
+        let accumulator = 0;
+        for (j = 0; j < N; j++) {
+          if(!matrix[j]) {accumulator += 0;}
+          else{accumulator += matrix[j][i].amount;}
+        }
+        let item = (accumulator / N).toFixed(1);
+        result.push(Number(item));
       }
+      return result;
     }
-    return arr;
+    const calculatedAverage = countAverege();
+    console.log(calculatedAverage);
+    setAverageArr(calculatedAverage);
+  }, [M, N, matrix]);
+
+  const onSubmit = (mVal:number, nVal:number) => {
+    setM(mVal);
+    setN(nVal);
   }
 
   const handleIncrement = (id:number) => {
@@ -95,48 +79,22 @@ const App: React.FC = () => {
       return row;
     });
     setMatrix(newMatrix);
-    const countSum = countSumArr();
-    const countAv = countAverege();
-    setSum(countSum);
-    setAverageArr(countAv);
-  }
-
-  const deleteRow = (indexRow:number) => {
-    if(matrix.length < 3) return;
-    const newMatrix = [...matrix];
-    newMatrix.splice(indexRow, 1);
-    setMatrix(newMatrix);
-    const countSum = countSumArr();
-    const countAv = countAverege();
-    setSum(countSum);
-    setAverageArr(countAv);
   }
 
   const addRow = () => {
-    let newMatrixRow:Cell[] = [];
-    for (let j = 0; j < N; j++) {
-      newMatrixRow.push(newCell(Number(nanoidNum()), (M*N)));
-    }
-    // console.log(newMatrix);
-    setMatrix(prevMatrix => [...prevMatrix, newMatrixRow]);
-    const countSum = countSumArr();
-    const countAv = countAverege();
-    setSum(countSum);
-    setAverageArr(countAv);
+    // let newMatrixRow:Cell[] = [];
+    // for (let j = 0; j < N; j++) {
+    //   const amount:CellValue = Math.floor(Math.random() * (M*N));
+    //   const newCell:Cell = {
+    //     id: Number(nanoidNum()),
+    //     amount
+    //   }
+    //   newMatrixRow.push(newCell);
+    // }
+    // // console.log(newMatrix);
+    // setMatrix(prevMatrix => [...prevMatrix, newMatrixRow]);
+    // setM( prevM => prevM+1);
   }
-
-  const onSubmit = (mVal:number, nVal:number) => {
-    setM(mVal);
-    setN(nVal);
-    const matr = createMatrix(mVal, nVal);
-    const countSum = countSumArr();
-    const countAv = countAverege();
-    setMatrix(matr);
-    setSum(countSum);
-    setAverageArr(countAv);
-  }
-
-  const firstRow = generateFirstRow();
 
   return (
     <div className="App">
@@ -147,35 +105,8 @@ const App: React.FC = () => {
           <>
             <table>
               <tbody>
-                <tr>
-                  {
-                    firstRow.map( item => 
-                      <td key={nanoid()}>{item}</td>
-                    )
-                  }
-                  <td key={nanoid()}>Sum values</td>
-                </tr>
                 {
-                  matrix.map( (row:Cell[], index:number) => {
-                    return (
-                      <tr key={nanoid()}>
-                        <td key={nanoid()} onClick={()=>deleteRow(index)}>Cell Value M = {index + 1}</td>
-                        {
-                          row.map((cell:Cell) => {
-                            return (
-                              <td 
-                              key={cell.id} 
-                              onClick={() => handleIncrement(cell.id)}
-                              >{cell.amount}</td>
-                            )}
-                          
-                          )
-                        }
-                        <td key={nanoid()}>{sum[index]}</td>
-                      </tr>
-                    )
-                  })
-      
+                  matrix.map( (row:Cell[]) => <Row key={nanoid()} row={row} onClickHandler={handleIncrement} />)
                 }
                 <tr>
                   <td key={nanoid()}>Average values</td>

@@ -19,7 +19,6 @@ const Form: React.FC<Props> = ({onSubmitFoo}) => {
     setShow(false);
   }
 
-
   return (
     <>
       {show && (
