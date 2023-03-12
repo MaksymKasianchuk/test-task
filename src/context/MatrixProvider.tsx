@@ -15,6 +15,7 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
     const [ N, setN ] = useState(0);
     const [ matrix, setMatrix ] = useState<Cell[][]>([[]]);
     const [ averageArr, setAverageArr ] = useState<number[]>([]);
+    // const [ seemArr, setSeemArr ] = useState<number[]>([]);
 
     const newCell = (id:CellId, maxValue:number) => {
         const amount:CellValue = Math.floor(Math.random() * maxValue);
@@ -67,6 +68,7 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
       });
       setMatrix(newMatrix);
     }
+
     const addRow = () => {
       let newMatrixRow:Cell[] = [];
       for (let j = 0; j < N; j++) {
@@ -89,8 +91,37 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
       setM( (prevM:number) => prevM - 1);
     }
 
+    const findSeem = (amount:CellValue) => {
+      const seemCells:number[] = [];
+      matrix.map((row:Cell[]) =>{
+        row.map((item) => {
+          if(item.amount === amount){
+            seemCells.push(item.id);
+          }
+          return item;
+        });
+        return row;
+      });
+      // setSeemArr(seemCells);
+      return seemCells;
+    }
+
     return (
-        <MatrixContext.Provider value={{  M, setM, N, setN, matrix, setMatrix, averageArr, setAverageArr, createMatrix, handleIncrement, addRow, deleteRow}}>
+        <MatrixContext.Provider value={{  
+          M, 
+          setM, 
+          N, 
+          setN, 
+          matrix, 
+          setMatrix, 
+          averageArr, 
+          setAverageArr, 
+          createMatrix, 
+          handleIncrement, 
+          addRow, 
+          deleteRow,
+          findSeem, 
+        }}>
         {children}
         </MatrixContext.Provider>
     );

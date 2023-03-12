@@ -13,14 +13,52 @@ code {
 }
 
 table{
-  border-collapse:collapse;
+  border-spacing: 0;
 }
 
-td{
-  border: 1px solid #000;
+th{
+  border-top: 1px solid #eee;
+  border-right: 1px solid #eee;
   padding: 10px;
   cursor: pointer;
   background-color: transparent; 
+  transition: all 250ms linear;
+}
+td{
+  border-top: 1px solid #eee;
+  border-right: 1px solid #eee;
+  padding: 10px;
+  cursor: pointer;
+  background-color: transparent; 
+  transition: all 250ms linear;
+}
+tbody>tr>td:nth-child(1){
+  font-weight: 700;
+  border-left: 1px solid #eee;
+}
+tbody>tr:last-child>td{
+  border-bottom: 1px solid #eee;
+}
+
+tbody>tr:nth-child(even){
+  background-color: #f8f8f8;
+}
+
+tr{
+  transition: all 250ms linear;
+}
+tbody>tr:last-child>td:last-child{
+  border-bottom-right-radius: 10px;
+}
+tbody>tr:last-child>td:nth-child(1){
+  border-bottom-left-radius: 10px;
+}
+thead>tr>th:last-child{
+  border-top-right-radius: 10px;
+}
+thead>tr>th:nth-child(1){
+  border-left: 1px solid #eee;
+  border-top-left-radius: 10px;
 }
 
 form{
@@ -54,4 +92,8 @@ form>button:hover{
 }
 .form-error{
   color: red;
+}
+
+.seem-cell{
+  background-color: aqua;
 }

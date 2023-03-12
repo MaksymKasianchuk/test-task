@@ -41,7 +41,7 @@ const Form: React.FC = () => {
             <input type="number" name="nVal" placeholder="N value"/>
             <button>Generate</button>
           </form>
-          {showError && (<p className="form-error">The value of M or N must be greater than 0 and less than 100</p>)}
+          {showError && (<p className="form-error">The value of M or N must be between 0 and 100</p>)}
         </>
       )}
     </>

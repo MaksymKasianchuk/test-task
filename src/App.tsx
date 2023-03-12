@@ -36,15 +36,17 @@ const App: React.FC = () => {
         (M !== 0 && N !== 0) && (
           <>
             <table>
-              <tbody>
+              <thead>
                 <tr>
                   {
                     firstRow.map( item => 
-                      <td key={nanoid()}>{item}</td>
+                      <th key={nanoid()}>{item}</th>
                     )
                   }
-                  <td key={nanoid()}>Sum values</td>
+                  <th key={nanoid()}>Sum values</th>
                 </tr>
+              </thead>
+              <tbody>
                 {
                   matrix.map( (row:Cell[], index:number) => 
                     <Row 

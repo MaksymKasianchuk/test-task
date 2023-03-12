@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { nanoid } from 'nanoid';
 import { useMatrix } from '../context/MatrixProvider';
 import { Cell } from '../types/types';
+import CellTd from "./CellTd";
 
 type Props = {
     row: Cell[],
@@ -12,7 +13,7 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
     const [ sumPercents, setPercents ] = useState<number[]>([]);
     const [ showPercents, setShowPercents ] = useState<boolean>(false);
     const [ showDelete, setShowDelete ] = useState<boolean>(false);
-    const { handleIncrement, deleteRow } = useMatrix();
+    const { deleteRow } = useMatrix();
 
     useEffect(()=> {
         const countSumArr = () => {
@@ -45,8 +46,8 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
         <tr key={nanoid()}
         style={
             showDelete ? 
-            {background: "red"} : 
-            {background: "#fff"}
+            {backgroundColor: "#ff9797"} : 
+            {color: "#000"}
         }
         >
             <td 
@@ -60,18 +61,13 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
             {
                 row.map((cell:Cell, cellIdx) => {
                     return (
-                        <td
-                        key={cell.id} 
-                        onClick={() => handleIncrement(cell.id)}
-                        style={
-                            showPercents ? 
-                            {background: `linear-gradient(0deg, rgba(162,162,255,1) 0%, rgba(162,162,255,1) ${sumPercents[cellIdx]}%, rgba(255,255,255,1) ${sumPercents[cellIdx]}%)`} : 
-                            {background: "transparrent"}
-                        }
-                        >
-                            {cell.amount}
-                            {showPercents && (<span>-{sumPercents[cellIdx]}%</span>)}
-                        </td>
+                        <CellTd 
+                            key={nanoid()} 
+                            cell={cell} 
+                            cellIdx={cellIdx} 
+                            showPercents={showPercents} 
+                            sumPercents={sumPercents}
+                        />
                     )}
                 )
             }

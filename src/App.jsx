@@ -27,11 +27,13 @@ const App = () => {
       <GenerateForm_1.default />
       {(M !== 0 && N !== 0) && (<>
             <table>
-              <tbody>
+              <thead>
                 <tr>
-                  {firstRow.map(item => <td key={(0, nanoid_1.nanoid)()}>{item}</td>)}
-                  <td key={(0, nanoid_1.nanoid)()}>Sum values</td>
+                  {firstRow.map(item => <th key={(0, nanoid_1.nanoid)()}>{item}</th>)}
+                  <th key={(0, nanoid_1.nanoid)()}>Sum values</th>
                 </tr>
+              </thead>
+              <tbody>
                 {matrix.map((row, index) => <Row_1.default key={(0, nanoid_1.nanoid)()} row={row} indexRow={index}/>)}
                 <tr>
                   <td key={(0, nanoid_1.nanoid)()}>Average values</td>
