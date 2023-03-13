@@ -13,12 +13,14 @@ type Props = {
 export const MatrixProvider: React.FC<Props> = ({ children }) => {
     const [ M, setM ] = useState(0);
     const [ N, setN ] = useState(0);
+    const [ X, setX ] = useState(0);
     const [ matrix, setMatrix ] = useState<Cell[][]>([[]]);
     const [ averageArr, setAverageArr ] = useState<number[]>([]);
-    // const [ seemArr, setSeemArr ] = useState<number[]>([]);
+    const [ seemArr, setSeemArr ] = useState<number[]>([]);
 
     const newCell = (id:CellId, maxValue:number) => {
         const amount:CellValue = Math.floor(Math.random() * maxValue);
+        // = Math.floor(Math.random() * maxValue);
         const newCell:Cell = {
           id,
           amount
@@ -26,12 +28,14 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
         return newCell;
     }
 
-    const createMatrix = (vM:number, vN:number) => {
+    const createMatrix = (vM:number, vN:number, xVal:number) => {
         let matrixL:Cell[][] = [[]];
         for (let i = 0; i < vM; i++) {
           matrixL.push(new Array(N));
           for (let j = 0; j < vN; j++) {
-            matrixL[i][j] = newCell(Number(nanoidNum()), (vM*vN));
+            const id = i.toString() + j.toString();
+            matrixL[i][j] = newCell(Number(id), xVal);
+            // (vM*vN)
           }
         }
         matrixL.pop();
@@ -72,9 +76,11 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
     const addRow = () => {
       let newMatrixRow:Cell[] = [];
       for (let j = 0; j < N; j++) {
-        const amount:CellValue = Math.floor(Math.random() * (M*N));
+        const amount:CellValue = Math.floor(Math.random() * X);
+        //Math.floor(Math.random() * (M*N))
+        const id = (M+1).toString() + j.toString();
         const newCell:Cell = {
-          id: Number(nanoidNum()),
+          id: Number(id),
           amount
         }
         newMatrixRow.push(newCell);
@@ -95,15 +101,16 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
       const seemCells:number[] = [];
       matrix.map((row:Cell[]) =>{
         row.map((item) => {
-          if(item.amount === amount){
-            seemCells.push(item.id);
-          }
+            if(item.amount === amount){
+              seemCells.push(item.id);
+            }
           return item;
         });
         return row;
       });
-      // setSeemArr(seemCells);
-      return seemCells;
+      setSeemArr(seemCells);
+      // console.log(seemArr.includes(itId))
+      // return seemCells;
     }
 
     return (
@@ -111,7 +118,9 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
           M, 
           setM, 
           N, 
-          setN, 
+          setN,
+          X, 
+          setX, 
           matrix, 
           setMatrix, 
           averageArr, 
@@ -120,7 +129,8 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
           handleIncrement, 
           addRow, 
           deleteRow,
-          findSeem, 
+          findSeem,
+          seemArr, 
         }}>
         {children}
         </MatrixContext.Provider>

@@ -10,23 +10,27 @@ exports.useMatrix = useMatrix;
 const MatrixProvider = ({ children }) => {
     const [M, setM] = (0, react_1.useState)(0);
     const [N, setN] = (0, react_1.useState)(0);
+    const [X, setX] = (0, react_1.useState)(0);
     const [matrix, setMatrix] = (0, react_1.useState)([[]]);
     const [averageArr, setAverageArr] = (0, react_1.useState)([]);
-    // const [ seemArr, setSeemArr ] = useState<number[]>([]);
+    const [seemArr, setSeemArr] = (0, react_1.useState)([]);
     const newCell = (id, maxValue) => {
         const amount = Math.floor(Math.random() * maxValue);
+        // = Math.floor(Math.random() * maxValue);
         const newCell = {
             id,
             amount
         };
         return newCell;
     };
-    const createMatrix = (vM, vN) => {
+    const createMatrix = (vM, vN, xVal) => {
         let matrixL = [[]];
         for (let i = 0; i < vM; i++) {
             matrixL.push(new Array(N));
             for (let j = 0; j < vN; j++) {
-                matrixL[i][j] = newCell(Number(nanoidNum()), (vM * vN));
+                const id = i.toString() + j.toString();
+                matrixL[i][j] = newCell(Number(id), xVal);
+                // (vM*vN)
             }
         }
         matrixL.pop();
@@ -64,9 +68,11 @@ const MatrixProvider = ({ children }) => {
     const addRow = () => {
         let newMatrixRow = [];
         for (let j = 0; j < N; j++) {
-            const amount = Math.floor(Math.random() * (M * N));
+            const amount = Math.floor(Math.random() * X);
+            //Math.floor(Math.random() * (M*N))
+            const id = (M + 1).toString() + j.toString();
             const newCell = {
-                id: Number(nanoidNum()),
+                id: Number(id),
                 amount
             };
             newMatrixRow.push(newCell);
@@ -93,14 +99,17 @@ const MatrixProvider = ({ children }) => {
             });
             return row;
         });
-        // setSeemArr(seemCells);
-        return seemCells;
+        setSeemArr(seemCells);
+        // console.log(seemArr.includes(itId))
+        // return seemCells;
     };
     return (<MatrixContext.Provider value={{
             M,
             setM,
             N,
             setN,
+            X,
+            setX,
             matrix,
             setMatrix,
             averageArr,
@@ -110,6 +119,7 @@ const MatrixProvider = ({ children }) => {
             addRow,
             deleteRow,
             findSeem,
+            seemArr,
         }}>
         {children}
         </MatrixContext.Provider>);

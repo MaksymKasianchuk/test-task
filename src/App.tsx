@@ -39,31 +39,36 @@ const App: React.FC = () => {
               <thead>
                 <tr>
                   {
-                    firstRow.map( item => 
-                      <th key={nanoid()}>{item}</th>
+                    firstRow.map( (item, index) => 
+                      <th 
+                      key={index}
+                      >{item}</th>
                     )
                   }
-                  <th key={nanoid()}>Sum values</th>
+                  <th>Sum values</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   matrix.map( (row:Cell[], index:number) => 
                     <Row 
-                      key={nanoid()} 
+                      key={index} 
                       row={row} 
                       indexRow={index} 
                     />
                   )
                 }
                 <tr>
-                  <td key={nanoid()}>Average values</td>
+                  <td 
+                  >Average values</td>
                   {
-                    averageArr.map( (item:number) => 
-                      <td key={nanoid()}>{item}</td>
+                    averageArr.map( (item:number, idx:number) => 
+                      <td 
+                      key={idx}
+                      >{item}</td>
                     )
                   }
-                  <td key={nanoid()}></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>

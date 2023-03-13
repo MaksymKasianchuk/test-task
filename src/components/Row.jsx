@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
-const nanoid_1 = require("nanoid");
 const MatrixProvider_1 = require("../context/MatrixProvider");
 const CellTd_1 = __importDefault(require("./CellTd"));
 const Row = ({ row, indexRow }) => {
@@ -12,8 +11,9 @@ const Row = ({ row, indexRow }) => {
     const [sumPercents, setPercents] = (0, react_1.useState)([]);
     const [showPercents, setShowPercents] = (0, react_1.useState)(false);
     const [showDelete, setShowDelete] = (0, react_1.useState)(false);
-    const { deleteRow } = (0, MatrixProvider_1.useMatrix)();
+    const { matrix, deleteRow } = (0, MatrixProvider_1.useMatrix)();
     (0, react_1.useEffect)(() => {
+        // console.log('w');
         const countSumArr = () => {
             let initVal = 0;
             const resSum = row.reduce((accumulator, currentValue) => accumulator + currentValue.amount, initVal);
@@ -21,7 +21,7 @@ const Row = ({ row, indexRow }) => {
         };
         const calcSum = countSumArr();
         setSum(calcSum);
-    }, [row]);
+    }, [row, matrix]);
     (0, react_1.useEffect)(() => {
         const countPercents = () => {
             let arr = [];
@@ -36,16 +36,17 @@ const Row = ({ row, indexRow }) => {
         const percentsArr = countPercents();
         setPercents(percentsArr);
     }, [sum, row]);
-    return (<tr key={(0, nanoid_1.nanoid)()} style={showDelete ?
+    return (<tr style={showDelete ?
             { backgroundColor: "#ff9797" } :
             { color: "#000" }}>
-            <td key={(0, nanoid_1.nanoid)()} onMouseEnter={() => setShowDelete(true)} onMouseLeave={() => setShowDelete(false)} onClick={() => deleteRow(indexRow)}>
+            <td onMouseEnter={() => setShowDelete(true)} onMouseLeave={() => setShowDelete(false)} onClick={() => deleteRow(indexRow)}>
                 {showDelete ? "Delete this row" : `Cell Value M = ${indexRow + 1}`}
             </td>
             {row.map((cell, cellIdx) => {
-            return (<CellTd_1.default key={(0, nanoid_1.nanoid)()} cell={cell} cellIdx={cellIdx} showPercents={showPercents} sumPercents={sumPercents}/>);
+            const cellid = showPercents.toString() + cell.id;
+            return (<CellTd_1.default key={cellid} cell={cell} cellIdx={cellIdx} showPercents={showPercents} sumPercents={sumPercents}/>);
         })}
-            <td key={(0, nanoid_1.nanoid)()} onMouseEnter={() => setShowPercents(true)} onMouseLeave={() => setShowPercents(false)}>{sum}</td>
+            <td onMouseEnter={() => setShowPercents(true)} onMouseLeave={() => setShowPercents(false)}>{sum}</td>
         </tr>);
 };
 exports.default = Row;

@@ -13,9 +13,10 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
     const [ sumPercents, setPercents ] = useState<number[]>([]);
     const [ showPercents, setShowPercents ] = useState<boolean>(false);
     const [ showDelete, setShowDelete ] = useState<boolean>(false);
-    const { deleteRow } = useMatrix();
+    const { matrix, deleteRow } = useMatrix();
 
     useEffect(()=> {
+        // console.log('w');
         const countSumArr = () => {
             let initVal:number = 0;
             const resSum = row.reduce(
@@ -26,7 +27,7 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
         }
         const calcSum = countSumArr();
         setSum(calcSum);
-    }, [row]);
+    }, [row, matrix]);
     
     useEffect(()=> {
         const countPercents = () => {
@@ -42,16 +43,16 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
         setPercents(percentsArr);
     }, [sum, row]);
 
+
     return(
-        <tr key={nanoid()}
-        style={
+        <tr 
+            style={
             showDelete ? 
             {backgroundColor: "#ff9797"} : 
             {color: "#000"}
-        }
+            }
         >
             <td 
-                key={nanoid()} 
                 onMouseEnter={() => setShowDelete(true)}
                 onMouseLeave={() => setShowDelete(false)} 
                 onClick={() => deleteRow(indexRow)}
@@ -60,9 +61,10 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
             </td>
             {
                 row.map((cell:Cell, cellIdx) => {
+                    const cellid = showPercents.toString() + cell.id;
                     return (
                         <CellTd 
-                            key={nanoid()} 
+                            key={cellid} 
                             cell={cell} 
                             cellIdx={cellIdx} 
                             showPercents={showPercents} 
@@ -71,7 +73,7 @@ const Row: React.FC<Props> = ({ row, indexRow }) => {
                     )}
                 )
             }
-            <td key={nanoid()}  
+            <td 
                 onMouseEnter={() => setShowPercents(true)}
                 onMouseLeave={() => setShowPercents(false)}
             >{sum}</td>

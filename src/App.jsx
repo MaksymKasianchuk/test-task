@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const MatrixProvider_1 = require("./context/MatrixProvider");
-const nanoid_1 = require("nanoid");
 const GenerateForm_1 = __importDefault(require("./components/GenerateForm"));
 const Row_1 = __importDefault(require("./components/Row"));
 require("./App.css");
@@ -29,16 +28,16 @@ const App = () => {
             <table>
               <thead>
                 <tr>
-                  {firstRow.map(item => <th key={(0, nanoid_1.nanoid)()}>{item}</th>)}
-                  <th key={(0, nanoid_1.nanoid)()}>Sum values</th>
+                  {firstRow.map((item, index) => <th key={index}>{item}</th>)}
+                  <th>Sum values</th>
                 </tr>
               </thead>
               <tbody>
-                {matrix.map((row, index) => <Row_1.default key={(0, nanoid_1.nanoid)()} row={row} indexRow={index}/>)}
+                {matrix.map((row, index) => <Row_1.default key={index} row={row} indexRow={index}/>)}
                 <tr>
-                  <td key={(0, nanoid_1.nanoid)()}>Average values</td>
-                  {averageArr.map((item) => <td key={(0, nanoid_1.nanoid)()}>{item}</td>)}
-                  <td key={(0, nanoid_1.nanoid)()}></td>
+                  <td>Average values</td>
+                  {averageArr.map((item, idx) => <td key={idx}>{item}</td>)}
+                  <td></td>
                 </tr>
               </tbody>
             </table>
