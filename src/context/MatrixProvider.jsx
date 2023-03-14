@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatrixProvider = exports.useMatrix = void 0;
 const react_1 = require("react");
-const nanoid_1 = require("nanoid");
-const nanoidNum = (0, nanoid_1.customAlphabet)('1234567890', 3);
+// import { customAlphabet } from 'nanoid';
+// const nanoidNum = customAlphabet('1234567890', 3);
 const MatrixContext = (0, react_1.createContext)(null);
 const useMatrix = () => (0, react_1.useContext)(MatrixContext);
 exports.useMatrix = useMatrix;
@@ -16,7 +16,6 @@ const MatrixProvider = ({ children }) => {
     const [seemArr, setSeemArr] = (0, react_1.useState)([]);
     const newCell = (id, maxValue) => {
         const amount = Math.floor(Math.random() * maxValue);
-        // = Math.floor(Math.random() * maxValue);
         const newCell = {
             id,
             amount
@@ -30,7 +29,6 @@ const MatrixProvider = ({ children }) => {
             for (let j = 0; j < vN; j++) {
                 const id = i.toString() + j.toString();
                 matrixL[i][j] = newCell(Number(id), xVal);
-                // (vM*vN)
             }
         }
         matrixL.pop();
@@ -69,7 +67,6 @@ const MatrixProvider = ({ children }) => {
         let newMatrixRow = [];
         for (let j = 0; j < N; j++) {
             const amount = Math.floor(Math.random() * X);
-            //Math.floor(Math.random() * (M*N))
             const id = (M + 1).toString() + j.toString();
             const newCell = {
                 id: Number(id),
@@ -90,16 +87,33 @@ const MatrixProvider = ({ children }) => {
     };
     const findSeem = (amount) => {
         const seemCells = [];
-        matrix.map((row) => {
-            row.map((item) => {
-                if (item.amount === amount) {
-                    seemCells.push(item.id);
-                }
-                return item;
-            });
-            return row;
-        });
+        const flatMatrix = matrix.flat();
+        let left = 0;
+        let right = flatMatrix.length - 1;
+        while (right - left >= X) {
+            if (Math.abs(flatMatrix[left].amount - amount) > Math.abs(flatMatrix[right].amount - amount)) {
+                left++;
+            }
+            else {
+                right--;
+            }
+        }
+        while (left <= right) {
+            seemCells.push(flatMatrix[left].id);
+            left++;
+        }
         setSeemArr(seemCells);
+        // const seemCells:number[] = [];
+        // matrix.map((row:Cell[]) =>{
+        //   row.map((item) => {
+        //       if(item.amount === amount){
+        //         seemCells.push(item.id);
+        //       }
+        //     return item;
+        //   });
+        //   return row;
+        // });
+        // setSeemArr(seemCells);
         // console.log(seemArr.includes(itId))
         // return seemCells;
     };

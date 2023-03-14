@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Cell, CellId, CellValue } from "../types/types";
-import { customAlphabet } from 'nanoid';
+// import { customAlphabet } from 'nanoid';
 
-const nanoidNum = customAlphabet('1234567890', 3);
+// const nanoidNum = customAlphabet('1234567890', 3);
 const MatrixContext = createContext<any>(null);
 
 export const useMatrix = () => useContext(MatrixContext);
@@ -20,7 +20,6 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
 
     const newCell = (id:CellId, maxValue:number) => {
         const amount:CellValue = Math.floor(Math.random() * maxValue);
-        // = Math.floor(Math.random() * maxValue);
         const newCell:Cell = {
           id,
           amount
@@ -35,7 +34,6 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
           for (let j = 0; j < vN; j++) {
             const id = i.toString() + j.toString();
             matrixL[i][j] = newCell(Number(id), xVal);
-            // (vM*vN)
           }
         }
         matrixL.pop();
@@ -77,7 +75,6 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
       let newMatrixRow:Cell[] = [];
       for (let j = 0; j < N; j++) {
         const amount:CellValue = Math.floor(Math.random() * X);
-        //Math.floor(Math.random() * (M*N))
         const id = (M+1).toString() + j.toString();
         const newCell:Cell = {
           id: Number(id),
@@ -99,16 +96,35 @@ export const MatrixProvider: React.FC<Props> = ({ children }) => {
 
     const findSeem = (amount:CellValue) => {
       const seemCells:number[] = [];
-      matrix.map((row:Cell[]) =>{
-        row.map((item) => {
-            if(item.amount === amount){
-              seemCells.push(item.id);
-            }
-          return item;
-        });
-        return row;
-      });
+      const flatMatrix = matrix.flat();
+      let left = 0;
+      let right = flatMatrix.length-1;
+
+      while (right - left >= X){
+        if (Math.abs(flatMatrix[left].amount - amount) > Math.abs(flatMatrix[right].amount - amount)) {
+          left++;
+        }
+        else {
+          right--;
+        }
+      }
+      while (left <= right){
+        seemCells.push(flatMatrix[left].id);
+        left++;
+      }
       setSeemArr(seemCells);
+
+      // const seemCells:number[] = [];
+      // matrix.map((row:Cell[]) =>{
+      //   row.map((item) => {
+      //       if(item.amount === amount){
+      //         seemCells.push(item.id);
+      //       }
+      //     return item;
+      //   });
+      //   return row;
+      // });
+      // setSeemArr(seemCells);
       // console.log(seemArr.includes(itId))
       // return seemCells;
     }

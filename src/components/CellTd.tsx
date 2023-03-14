@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useMatrix } from '../context/MatrixProvider';
 import { Cell } from '../types/types';
 type Props = {
@@ -9,18 +8,7 @@ type Props = {
 };
 
 const CellTd: React.FC<Props> = ({ cell, cellIdx, showPercents, sumPercents }) => {
-    // const { handleIncrement } = useMatrix();
-    
-    // find cell with seem value
-    // const [ showSeem, setShowSeem ] = useState<boolean>(false);
     const { seemArr, findSeem, handleIncrement } = useMatrix();
-    // const handleShowSeemItem = (amount:number) => {
-    //     const seemArray = findSeem(amount);
-    //     console.log(seemArray);
-    //     if(seemArray.includes(cell.id)){
-    //         setShowSeem(true);
-    //     }
-    // }
 
     return (
         <td
